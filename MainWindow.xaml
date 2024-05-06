@@ -1,0 +1,65 @@
+﻿<Window x:Class="Idiom_Translator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Idiom_Translator"
+        mc:Ignorable="d"
+        Title="MainWindow" ResizeMode="NoResize" Height="450" Width="800" Background="CornflowerBlue">
+    <Grid Margin="0,10,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnSpace" Content="" HorizontalAlignment="Left" Margin="222,361,0,0" VerticalAlignment="Top" Width="228" Height="37" Click="btnSpace_Click"/>
+        <TextBlock x:Name="txtSource2" HorizontalAlignment="Left" Margin="22,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="342" Height="111" Background="white"/>
+        <TextBlock x:Name="txtTarget" HorizontalAlignment="Left" Margin="424,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="white" Width="340" Height="111"/>
+        <Button x:Name="btnQ" Content="Q" HorizontalAlignment="Left" Height="37" Margin="87,202,0,0" VerticalAlignment="Top" Width="41" Click="btnQ_Click"/>
+        <Button x:Name="btnP" Content="P" HorizontalAlignment="Left" Height="37" Margin="532,202,0,0" VerticalAlignment="Top" Width="41" Click="btnP_Click"/>
+        <Button x:Name="btnI" Content="I" HorizontalAlignment="Left" Height="37" Margin="434,202,0,0" VerticalAlignment="Top" Width="41" Click="btnI_Click"/>
+        <Button x:Name="btnO" Content="O" HorizontalAlignment="Left" Height="37" Margin="481,202,0,0" VerticalAlignment="Top" Width="45" Click="btnO_Click"/>
+        <Button x:Name="btnU" Content="U" HorizontalAlignment="Left" Height="37" Margin="383,202,0,0" VerticalAlignment="Top" Width="45" Click="btnU_Click"/>
+        <Button x:Name="btnY" Content="Y" HorizontalAlignment="Left" Height="37" Margin="335,202,0,0" VerticalAlignment="Top" Width="42" Click="btnY_Click"/>
+        <Button x:Name="btnT" Content="T" HorizontalAlignment="Left" Height="37" Margin="286,202,0,0" VerticalAlignment="Top" Width="41" Click="btnT_Click"/>
+        <Button x:Name="btnR" Content="R" HorizontalAlignment="Left" Height="37" Margin="235,202,0,0" VerticalAlignment="Top" Width="43" Click="btnR_Click"/>
+        <Button x:Name="btnE" Content="E" HorizontalAlignment="Left" Height="37" Margin="186,202,0,0" VerticalAlignment="Top" Width="42" Click="btnE_Click"/>
+        <Button x:Name="btnW" Content="W" HorizontalAlignment="Left" Height="37" Margin="136,202,0,0" VerticalAlignment="Top" Width="43" Click="btnW_Click"/>
+        <Button x:Name="btnL" Content="L" HorizontalAlignment="Left" Height="37" Margin="512,252,0,0" VerticalAlignment="Top" Width="40" Click="btnL_Click"/>
+        <Button x:Name="btnJ" Content="J" HorizontalAlignment="Left" Height="37" Margin="414,252,0,0" VerticalAlignment="Top" Width="42" Click="btnJ_Click"/>
+        <Button x:Name="btnK" Content="K" HorizontalAlignment="Left" Height="37" Margin="462,252,0,0" VerticalAlignment="Top" Width="46" Click="btnK_Click"/>
+        <Button x:Name="btnH" Content="H" HorizontalAlignment="Left" Height="37" Margin="364,252,0,0" VerticalAlignment="Top" Width="44" Click="btnH_Click"/>
+        <Button x:Name="btnG" Content="G" HorizontalAlignment="Left" Height="37" Margin="315,252,0,0" VerticalAlignment="Top" Width="42" Click="btnG_Click"/>
+        <Button x:Name="btnF" Content="F" HorizontalAlignment="Left" Height="37" Margin="266,252,0,0" VerticalAlignment="Top" Width="42" Click="btnF_Click"/>
+        <Button x:Name="btnD" Content="D" HorizontalAlignment="Left" Height="37" Margin="216,252,0,0" VerticalAlignment="Top" Width="44" Click="btnD_Click"/>
+        <Button x:Name="btnS" Content="S" HorizontalAlignment="Left" Height="37" Margin="166,252,0,0" VerticalAlignment="Top" Width="44" Click="btnS_Click"/>
+        <Button x:Name="btnA" Content="A" HorizontalAlignment="Left" Height="37" Margin="118,252,0,0" VerticalAlignment="Top" Width="42" Click="btnA_Click"/>
+        <Button x:Name="btnM" Content="M" HorizontalAlignment="Left" Height="37" Margin="442,308,0,0" VerticalAlignment="Top" Width="40" Click="btnM_Click"/>
+        <Button x:Name="btnB" Content="B" HorizontalAlignment="Left" Height="37" Margin="341,308,0,0" VerticalAlignment="Top" Width="42" Click="btnB_Click"/>
+        <Button x:Name="btnN" Content="N" HorizontalAlignment="Left" Height="37" Margin="390,308,0,0" VerticalAlignment="Top" Width="46" Click="btnN_Click"/>
+        <Button x:Name="btnV" Content="V" HorizontalAlignment="Left" Height="37" Margin="292,308,0,0" VerticalAlignment="Top" Width="44" Click="btnV_Click"/>
+        <Button x:Name="btnC" Content="C" HorizontalAlignment="Left" Height="37" Margin="244,308,0,0" VerticalAlignment="Top" Width="42" Click="btnC_Click"/>
+        <Button x:Name="btnX" Content="X" HorizontalAlignment="Left" Height="37" Margin="194,308,0,0" VerticalAlignment="Top" Width="42" Click="btnX_Click"/>
+        <Button x:Name="btnZ" Content="Z" HorizontalAlignment="Left" Height="37" Margin="144,308,0,0" VerticalAlignment="Top" Width="44" Click="btnZ_Click"/>
+        <Button x:Name="btnTone1" Content=" ˉ " FontSize="40" HorizontalAlignment="Left" Height="36" Margin="661,212,0,0" VerticalAlignment="Top" Width="41" Click="btnTone1_Click" RenderTransformOrigin="-0.26,-1.606"/>
+        <Button x:Name="btnTone2" Content="ˊ" FontSize="40" HorizontalAlignment="Left" Height="36" Margin="661,253,0,0" VerticalAlignment="Top" Width="41" Click="btnTone2_Click"/>
+        <Button x:Name="btnTone3" Content="ˇ" FontSize="40" HorizontalAlignment="Left" Height="36" Margin="661,294,0,0" VerticalAlignment="Top" Width="41" Click="btnTone3_Click"/>
+        <Button x:Name="btnTone4" Content="ˋ" FontSize="40" HorizontalAlignment="Left" Height="36" Margin="662,335,0,0" VerticalAlignment="Top" Width="40" Click="btnTone4_Click"/>
+        <Button x:Name="btnUdot" Content="Ü" HorizontalAlignment="Left" Height="37" Margin="492,308,0,0" VerticalAlignment="Top" Width="40" Click="btnUdot_Click"/>
+        <Button x:Name="btnQuestion" Content="?" FontSize="22" HorizontalAlignment="Left" Height="36" Margin="561,361,0,0" VerticalAlignment="Top" Width="44" Click="btnQuestion_Click"/>
+        <Button x:Name="btnExclamation" Content="!" FontSize="22" HorizontalAlignment="Left" Height="36" Margin="166,361,0,0" VerticalAlignment="Top" Width="44" Click="btnExclamation_Click"/>
+        <Button x:Name="btnPeriod" Content="." FontSize="24" HorizontalAlignment="Left" Height="36" Margin="512,362,0,0" VerticalAlignment="Top" Width="44" Click="btnPeriod_Click"/>
+        <Button x:Name="btnComma" Content="," FontSize="24" HorizontalAlignment="Left" Height="36" Margin="462,362,0,0" VerticalAlignment="Top" Width="44" Click="btnComma_Click"/>
+        <Button x:Name="btnEnter" Content="↵ " FontSize="25" Background="white" HorizontalAlignment="Left" Margin="557,252,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnEnter_Click"/>
+        <Button x:Name="btnRefresh" Content="⟳" FontSize="22" Background="white" HorizontalAlignment="Left" Margin="537,308,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnRefresh_Click"/>
+        <Button x:Name="btnBackspace" Content="←" FontSize="23" Background="white" HorizontalAlignment="Left" Margin="578,202,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnBackspace_Click"/>
+        <Label x:Name="lblPinyin" Content="" Background="Cornsilk" HorizontalAlignment="Left" Height="37" Margin="89,135,0,0" VerticalAlignment="Top" Width="171"/>
+        <Button x:Name="btnSuggest1" Background="AliceBlue" HorizontalAlignment="Left" Margin="287,135,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest1_Click"/>
+        <Button x:Name="btnSuggest2" Background="AliceBlue" HorizontalAlignment="Left" Margin="330,135,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest2_Click"/>
+        <Button x:Name="btnSuggest3" Background="AliceBlue" HorizontalAlignment="Left" Margin="375,135,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest3_Click"/>
+        <Button x:Name="btnSuggest4" Background="AliceBlue" HorizontalAlignment="Left" Margin="420,135,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest4_Click"/>
+        <Button x:Name="btnSuggest5" Background="AliceBlue" HorizontalAlignment="Left" Margin="463,135,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest5_Click"/>
+        <Button x:Name="BtnConvert" Background="PaleGoldenrod" Content="⟹" FontSize="20" HorizontalAlignment="Left" Margin="369,34,0,0" VerticalAlignment="Top" Height="38" Width="50" Click="BtnConvert_Click"/>
+    </Grid>
+</Window>
