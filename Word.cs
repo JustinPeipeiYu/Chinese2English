@@ -4,7 +4,7 @@ namespace Idiom_Translator
 {
     internal class Word
     {
-        [Index(3)]
+        [Index(4)]
         public string Unicode {  get; set; }
         [Index(1)]
         public string Pinyin {  get; set; }

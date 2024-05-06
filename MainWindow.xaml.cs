@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace Idiom_Translator
 {
@@ -27,6 +28,9 @@ namespace Idiom_Translator
         public MainWindow()
         {
             InitializeComponent();
+            string c;
+            string d;
+            List<string> e= new List<string>();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = false,
@@ -35,14 +39,26 @@ namespace Idiom_Translator
             using (var csv = new CsvReader(reader, config))
             {
                 var records = csv.GetRecords<Word>();
-                int c = 0;
+                /*
                 foreach (var record in records)
                 {
                     c++;
                 }
                 lblPinyin.Content = c.ToString();
+                */
+                foreach (var record in records)
+                {
+                    if (record.Pinyin.Equals("yě"))
+                    {
+                        d = "\u4E5F";
+                        c = Regex.Unescape(record.Unicode);
+                        e.Add(c);
+                    }
+                }
+                lblPinyin.Content = e[0];
             }
         }
+
 
         private void btnSuggest1_Click(object sender, RoutedEventArgs e)
         {
