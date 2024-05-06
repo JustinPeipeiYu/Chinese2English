@@ -29,7 +29,6 @@ namespace Idiom_Translator
         {
             InitializeComponent();
             string c;
-            string d;
             List<string> e= new List<string>();
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -39,23 +38,18 @@ namespace Idiom_Translator
             using (var csv = new CsvReader(reader, config))
             {
                 var records = csv.GetRecords<Word>();
-                /*
+                
                 foreach (var record in records)
                 {
-                    c++;
-                }
-                lblPinyin.Content = c.ToString();
-                */
-                foreach (var record in records)
-                {
+                    //search all matching pinyin in Ienumerable collection
                     if (record.Pinyin.Equals("yě"))
                     {
-                        d = "\u4E5F";
+                        //add corresponding hanyu to a list
                         c = Regex.Unescape(record.Unicode);
                         e.Add(c);
                     }
                 }
-                lblPinyin.Content = e[0];
+                lblPinyin.Content = e.Count();
             }
         }
 
