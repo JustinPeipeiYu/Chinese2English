@@ -26,11 +26,24 @@ namespace Idiom_Translator
     public partial class MainWindow : Window
     {
         string searchWord="";
+        string vowels = "aeiouü";
+        List<Idiom_Translator.Word> pinyinHanyuRecords;
+        List<Idiom_Translator.Vowels> tonedVowelsRecords;
+
         public MainWindow()
         {
             InitializeComponent();
+            //capture the unicode (hanyu) character
             string c;
+            //list of all hanyu characters with matching pinyin 
             List<string> e= new List<string>();
+            pinyinHanyuRecords = readPinyinHanyuRecords();
+            tonedVowelsRecords = readtonedVowelsRecords();
+        }
+
+        //read 8105 entries from pinyin hanyu datatable
+        private List<Idiom_Translator.Word> readPinyinHanyuRecords()
+        {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = false,
@@ -38,23 +51,36 @@ namespace Idiom_Translator
             using (var reader = new StreamReader("list of pinyin hanyu.csv"))
             using (var csv = new CsvReader(reader, config))
             {
-                var records = csv.GetRecords<Word>();
-                
-                foreach (var record in records)
+                var pinyinHanyuRecords = csv.GetRecords<Word>();
+                /*
+                //search all matching pinyin in Ienumerable collection
+                foreach (var record in pinyinHanyuRecords)
                 {
-                    //search all matching pinyin in Ienumerable collection
                     if (record.Pinyin.Equals("yě"))
                     {
                         //add corresponding hanyu to a list
                         c = Regex.Unescape(record.Unicode);
                         e.Add(c);
                     }
-                }
-                //lblPinyin.Content = e.Count();
+                }*/
+                return pinyinHanyuRecords.ToList();
             }
         }
 
-
+        //read 6 entries from tone on vowel datatable
+        private List<Idiom_Translator.Vowels> readtonedVowelsRecords()
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = false,
+            };
+            using (var reader = new StreamReader("tones on vowels.csv"))
+            using (var csv = new CsvReader(reader, config))
+            {
+                var tonedVowels = csv.GetRecords<Vowels>();
+                return tonedVowels.ToList();
+            }
+        }
         private void btnSuggest1_Click(object sender, RoutedEventArgs e)
         {
 
@@ -94,7 +120,8 @@ namespace Idiom_Translator
 
         private void btnE_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += "e";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnR_Click(object sender, RoutedEventArgs e)
@@ -117,17 +144,20 @@ namespace Idiom_Translator
 
         private void btnU_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += "u";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnI_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += "i";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnO_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += "o";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnP_Click(object sender, RoutedEventArgs e)
@@ -138,7 +168,8 @@ namespace Idiom_Translator
 
         private void btnA_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += "a";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnS_Click(object sender, RoutedEventArgs e)
@@ -239,47 +270,96 @@ namespace Idiom_Translator
 
         private void btnExclamation_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += "!";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnSpace_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += " ";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnComma_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += ",";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnPeriod_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += ".";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnQuestion_Click(object sender, RoutedEventArgs e)
         {
-
+            searchWord += "?";
+            lblPinyin.Content = searchWord;
         }
 
         private void btnTone1_Click(object sender, RoutedEventArgs e)
         {
-
+            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            if (vowels.Contains(lastLetter))
+            {
+                foreach (var record in tonedVowelsRecords)
+                {
+                    if (record.vowel.Equals(lastLetter))
+                    {
+                        searchWord += record.vowelTone1;
+                    }
+                }
+                lblPinyin.Content = searchWord;
+            }
         }
 
         private void btnTone2_Click(object sender, RoutedEventArgs e)
         {
-
+            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            if (vowels.Contains(lastLetter))
+            {
+                foreach (var record in tonedVowelsRecords)
+                {
+                    if (record.vowel.Equals(lastLetter))
+                    {
+                        searchWord += record.vowelTone2;
+                    }
+                }
+                lblPinyin.Content = searchWord;
+            } 
         }
 
         private void btnTone3_Click(object sender, RoutedEventArgs e)
         {
-
+            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            if (vowels.Contains(lastLetter))
+            {
+                foreach (var record in tonedVowelsRecords)
+                {
+                    if (record.vowel.Equals(lastLetter))
+                    {
+                        searchWord += record.vowelTone3;
+                    }
+                }
+                lblPinyin.Content = searchWord;
+            }
         }
 
         private void btnTone4_Click(object sender, RoutedEventArgs e)
         {
-
+            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            if (vowels.Contains(lastLetter))
+            {
+                foreach (var record in tonedVowelsRecords)
+                {
+                    if (record.vowel.Equals(lastLetter))
+                    {
+                        searchWord += record.vowelTone4;
+                    }
+                }
+                lblPinyin.Content = searchWord;
+            }
         }
 
         private void btnBackspace_Click(object sender, RoutedEventArgs e)
