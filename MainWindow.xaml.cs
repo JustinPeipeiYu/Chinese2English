@@ -307,6 +307,7 @@ namespace Idiom_Translator
                 {
                     if (record.vowel.Equals(lastLetter))
                     {
+                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
                         searchWord += record.vowelTone1;
                     }
                 }
@@ -323,6 +324,7 @@ namespace Idiom_Translator
                 {
                     if (record.vowel.Equals(lastLetter))
                     {
+                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
                         searchWord += record.vowelTone2;
                     }
                 }
@@ -339,6 +341,7 @@ namespace Idiom_Translator
                 {
                     if (record.vowel.Equals(lastLetter))
                     {
+                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
                         searchWord += record.vowelTone3;
                     }
                 }
@@ -355,6 +358,7 @@ namespace Idiom_Translator
                 {
                     if (record.vowel.Equals(lastLetter))
                     {
+                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
                         searchWord += record.vowelTone4;
                     }
                 }
