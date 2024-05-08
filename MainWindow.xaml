@@ -14,7 +14,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="btnSpace" Content="" HorizontalAlignment="Left" Margin="222,361,0,0" VerticalAlignment="Top" Width="228" Height="37" Click="btnSpace_Click"/>
-        <TextBlock x:Name="txtSource2" HorizontalAlignment="Left" Margin="22,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="342" Height="111" Background="white"/>
+        <TextBlock x:Name="txtSource" HorizontalAlignment="Left" Margin="22,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="342" Height="111" Background="white"/>
         <TextBlock x:Name="txtTarget" HorizontalAlignment="Left" Margin="424,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="white" Width="340" Height="111"/>
         <Button x:Name="btnQ" Content="Q" HorizontalAlignment="Left" Height="37" Margin="87,202,0,0" VerticalAlignment="Top" Width="41" Click="btnQ_Click"/>
         <Button x:Name="btnP" Content="P" HorizontalAlignment="Left" Height="37" Margin="532,202,0,0" VerticalAlignment="Top" Width="41" Click="btnP_Click"/>
