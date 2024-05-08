@@ -8,5 +8,7 @@ namespace Idiom_Translator
         public string Unicode {  get; set; }
         [Index(1)]
         public string Pinyin {  get; set; }
+        [Index(2)]
+        public int Frequency { get; set; }
     }
 }

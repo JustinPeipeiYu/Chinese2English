@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.Security.Policy;
 
 namespace Idiom_Translator
 {
@@ -25,63 +26,55 @@ namespace Idiom_Translator
     /// </summary>
     public partial class MainWindow : Window
     {
-        string searchWord="";
-        List<string> returnWords;
-        string vowels = "aeiouü";
-        List<Idiom_Translator.Word> pinyinHanyuRecords;
-        List<Idiom_Translator.Vowels> tonedVowelsRecords;
+        string stringSearchWord="";
+        List<Word> listWord;
+        string stringVowels = "aeiouü";
+        List<Word> listWordRecords;
+        List<Vowels> listVowelRecords;
 
         public MainWindow()
         {
             InitializeComponent();
-            pinyinHanyuRecords = readPinyinHanyuRecords();
-            tonedVowelsRecords = readtonedVowelsRecords();
+            listWordRecords = methodReadWords();
+            listVowelRecords = methodReadVowels();
         }
 
-        private List<string> searchPinyinReturnHanyu(List<Idiom_Translator.Word> pinyinHanyuRecords)
+        private List<Word> methodFindWord(List<Word> pinyinHanyuRecords)
         {
             //list of all hanyu characters with matching pinyin 
-            List<string> e = new List<string>();
+            List<Word> e = new List<Word>();
             //search all matching pinyin in List
             foreach (var record in pinyinHanyuRecords)
             {
                 //proceed if there is a matching pinyin in Record
-                if (record.Pinyin.Equals(searchWord))
+                if (record.Pinyin.Equals(stringSearchWord))
                 {
                     //add pinyin's corresponding hanyu to List
-                    e.Add(Regex.Unescape(record.Unicode));
-                } else
-                {
-
-                }
+                    e.Add(record);
+                } 
             }
-            string o = "";
-            foreach (string s in e)
-            {
-                o += s;
-            }
-            txtSource.Text= o;
             //may return empty list
             return e;
         }
 
         //read 8105 entries from pinyin hanyu database
-        private List<Idiom_Translator.Word> readPinyinHanyuRecords()
+        private List<Word> methodReadWords()
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = false,
             };
+
             using (var reader = new StreamReader("list of pinyin hanyu.csv"))
             using (var csv = new CsvReader(reader, config))
             {
-                var pinyinHanyuRecords = csv.GetRecords<Word>();
-                return pinyinHanyuRecords.ToList();
+                var records = csv.GetRecords<Word>();
+                return records.ToList();
             }
         }
 
         //read 6 entries from tone on vowel database
-        private List<Idiom_Translator.Vowels> readtonedVowelsRecords()
+        private List<Vowels> methodReadVowels()
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -121,316 +114,316 @@ namespace Idiom_Translator
 
         private void btnQ_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "q";
-            lblPinyin.Content=searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "q";
+            lblPinyin.Content=stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnW_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "w";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "w";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnE_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "e";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "e";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnR_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "r";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "r";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnT_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "t";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "t";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnY_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "y";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "y";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnU_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "u";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "u";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnI_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "i";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "i";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnO_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "o";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "o";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnP_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "p";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "p";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnA_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "a";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "a";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnS_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "s";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "s";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnD_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "d";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "d";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnF_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "f";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "f";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnG_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "g";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "g";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnH_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "h";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "h";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnJ_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "j";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "j";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnK_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "k";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "k";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnL_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "l";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "l";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnZ_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "z";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "z";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnX_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "x";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "x";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnC_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "c";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "c";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnV_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "v";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "v";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnB_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "b";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "b";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnN_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "n";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "n";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnM_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "m";
-            lblPinyin.Content = searchWord;
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "m";
+            lblPinyin.Content = stringSearchWord;
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnUdot_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "ü";
-            lblPinyin.Content = searchWord; 
-            returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+            stringSearchWord += "ü";
+            lblPinyin.Content = stringSearchWord; 
+            listWord = methodFindWord(listWordRecords);
         }
 
         private void btnExclamation_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "!";
-            lblPinyin.Content = searchWord;
+            stringSearchWord += "!";
+            lblPinyin.Content = stringSearchWord;
         }
 
         private void btnSpace_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += " ";
-            lblPinyin.Content = searchWord;
+            stringSearchWord += " ";
+            lblPinyin.Content = stringSearchWord;
         }
 
         private void btnComma_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += ",";
-            lblPinyin.Content = searchWord;
+            stringSearchWord += ",";
+            lblPinyin.Content = stringSearchWord;
         }
 
         private void btnPeriod_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += ".";
-            lblPinyin.Content = searchWord;
+            stringSearchWord += ".";
+            lblPinyin.Content = stringSearchWord;
         }
 
         private void btnQuestion_Click(object sender, RoutedEventArgs e)
         {
-            searchWord += "?";
-            lblPinyin.Content = searchWord;
+            stringSearchWord += "?";
+            lblPinyin.Content = stringSearchWord;
         }
 
         private void btnTone1_Click(object sender, RoutedEventArgs e)
         {
             //get last letter
-            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            string lastLetter = stringSearchWord.Substring(stringSearchWord.Length - 1, 1);
             //proceed if the letter is vowel
-            if (vowels.Contains(lastLetter))
+            if (stringVowels.Contains(lastLetter))
             {
-                foreach (var record in tonedVowelsRecords)
+                foreach (var record in listVowelRecords)
                 {
                     //specify which vowel to tone
                     if (record.vowel.Equals(lastLetter))
                     {
                         //remove the last letter
-                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
+                        stringSearchWord = stringSearchWord.Substring(0, stringSearchWord.Length - 1);
                         //add the toned vowel
-                        searchWord += record.vowelTone1;
+                        stringSearchWord += record.vowelTone1;
                     }
                 }
                 //display to label
-                lblPinyin.Content = searchWord;
-                returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+                lblPinyin.Content = stringSearchWord;
+                listWord = methodFindWord(listWordRecords);
             }
         }
 
         private void btnTone2_Click(object sender, RoutedEventArgs e)
         {
             //get last letter
-            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            string lastLetter = stringSearchWord.Substring(stringSearchWord.Length - 1, 1);
             //proceed if the letter is vowel
-            if (vowels.Contains(lastLetter))
+            if (stringVowels.Contains(lastLetter))
             {
-                foreach (var record in tonedVowelsRecords)
+                foreach (var record in listVowelRecords)
                 {
                     //specify which vowel to tone
                     if (record.vowel.Equals(lastLetter))
                     {
                         //remove the last letter
-                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
+                        stringSearchWord = stringSearchWord.Substring(0, stringSearchWord.Length - 1);
                         //add the toned vowel
-                        searchWord += record.vowelTone1;
+                        stringSearchWord += record.vowelTone1;
                     }
                 }
                 //display to label
-                lblPinyin.Content = searchWord;
-                returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+                lblPinyin.Content = stringSearchWord;
+                listWord = methodFindWord(listWordRecords);
             }
         }
 
         private void btnTone3_Click(object sender, RoutedEventArgs e)
         {
             //get last letter
-            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            string lastLetter = stringSearchWord.Substring(stringSearchWord.Length - 1, 1);
             //proceed if the letter is vowel
-            if (vowels.Contains(lastLetter))
+            if (stringVowels.Contains(lastLetter))
             {
-                foreach (var record in tonedVowelsRecords)
+                foreach (var record in listVowelRecords)
                 {
                     //specify which vowel to tone
                     if (record.vowel.Equals(lastLetter))
                     {
                         //remove the last letter
-                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
+                        stringSearchWord = stringSearchWord.Substring(0, stringSearchWord.Length - 1);
                         //add the toned vowel
-                        searchWord += record.vowelTone1;
+                        stringSearchWord += record.vowelTone1;
                     }
                 }
                 //display to label
-                lblPinyin.Content = searchWord;
-                returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+                lblPinyin.Content = stringSearchWord;
+                listWord = methodFindWord(listWordRecords);
             }
         }
 
         private void btnTone4_Click(object sender, RoutedEventArgs e)
         {
             //get last letter
-            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
+            string lastLetter = stringSearchWord.Substring(stringSearchWord.Length - 1, 1);
             //proceed if the letter is vowel
-            if (vowels.Contains(lastLetter))
+            if (stringVowels.Contains(lastLetter))
             {
-                foreach (var record in tonedVowelsRecords)
+                foreach (var record in listVowelRecords)
                 {
                     //specify which vowel to tone
                     if (record.vowel.Equals(lastLetter))
                     {
                         //remove the last letter
-                        searchWord = searchWord.Substring(0, searchWord.Length - 1);
+                        stringSearchWord = stringSearchWord.Substring(0, stringSearchWord.Length - 1);
                         //add the toned vowel
-                        searchWord += record.vowelTone1;
+                        stringSearchWord += record.vowelTone1;
                     }
                 }
                 //display to label
-                lblPinyin.Content = searchWord;
-                returnWords = searchPinyinReturnHanyu(pinyinHanyuRecords);
+                lblPinyin.Content = stringSearchWord;
+                listWord = methodFindWord(listWordRecords);
             }
         }
 
@@ -450,6 +443,41 @@ namespace Idiom_Translator
         }
 
         private void BtnConvert_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSuggest6_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSuggest7_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSuggest8_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSuggest9_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSuggest10_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSuggest11_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSuggest12_Click(object sender, RoutedEventArgs e)
         {
 
         }
