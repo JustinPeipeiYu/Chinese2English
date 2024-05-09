@@ -54,7 +54,7 @@
         <Button x:Name="btnEnter" Content="↵ " FontSize="25" Background="white" HorizontalAlignment="Left" Margin="557,252,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnEnter_Click"/>
         <Button x:Name="btnRefresh" Content="⟳" FontSize="22" Background="white" HorizontalAlignment="Left" Margin="537,308,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnRefresh_Click"/>
         <Button x:Name="btnBackspace" Content="←" FontSize="23" Background="white" HorizontalAlignment="Left" Margin="578,202,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnBackspace_Click"/>
-        <Label x:Name="lblPinyin" Content="" Background="Cornsilk" HorizontalAlignment="Left" Height="37" Margin="22,136,0,0" VerticalAlignment="Top" Width="171"/>
+        <Label x:Name="lblPinyin" Content="" FontSize="19" Background="Cornsilk" HorizontalAlignment="Left" Height="37" Margin="22,136,0,0" VerticalAlignment="Top" Width="171"/>
         <Button x:Name="btnSuggest1" Background="AliceBlue" HorizontalAlignment="Left" Margin="207,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest1_Click"/>
         <Button x:Name="btnSuggest2" Background="AliceBlue" HorizontalAlignment="Left" Margin="256,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest2_Click"/>
         <Button x:Name="btnSuggest3" Background="AliceBlue" HorizontalAlignment="Left" Margin="306,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest3_Click"/>

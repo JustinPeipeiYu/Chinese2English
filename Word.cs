@@ -9,6 +9,6 @@ namespace Idiom_Translator
         [Index(1)]
         public string Pinyin {  get; set; }
         [Index(2)]
-        public int Frequency { get; set; }
+        public string Frequency { get; set; }
     }
 }
