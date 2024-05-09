@@ -121,6 +121,28 @@ namespace Idiom_Translator
             lblPinyin.Content = searchWord;
             return searchWord;
         }
+        private List<Word> methodSortWordList(List<Word> listSearchWord)
+        {
+            for (int i = 1; i < listSearchWord.Count; i++)
+            {
+                var key = listSearchWord[i];
+                var k = Int32.TryParse(key.Frequency, out int keyFreq);
+                if (!k) { keyFreq = 10000 + i; }
+                var flag = 0;
+                for (int j = i - 1; j >= 0 && flag != 1;j--)
+                {
+                    var adj = listSearchWord[j];
+                    var a = Int32.TryParse(adj.Frequency, out int adjFreq);
+                    if (!a) { adjFreq = 10000 + j; }
+                    if (keyFreq < adjFreq)
+                    {
+                        listSearchWord[j+1] = adj;
+                        listSearchWord[j] = key;
+                    } else { flag = 1; }
+                }
+            }
+            return listSearchWord;
+        }
         private void btnSuggest1_Click(object sender, RoutedEventArgs e)
         {
 
@@ -370,7 +392,6 @@ namespace Idiom_Translator
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)

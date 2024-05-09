@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Idiom_Translator"
         mc:Ignorable="d"
-        Title="MainWindow" ResizeMode="NoResize" Height="450" Width="800" Background="CornflowerBlue">
+        Title="Idiom Translator" ResizeMode="NoResize" Height="450" Width="800" Background="CornflowerBlue">
     <Grid Margin="0,10,0,0">
         <Grid.RowDefinitions>
             <RowDefinition/>
