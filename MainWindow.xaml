@@ -54,19 +54,14 @@
         <Button x:Name="btnEnter" Content="↵ " FontSize="25" Background="white" HorizontalAlignment="Left" Margin="557,252,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnEnter_Click"/>
         <Button x:Name="btnRefresh" Content="⟳" FontSize="22" Background="white" HorizontalAlignment="Left" Margin="537,308,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnRefresh_Click"/>
         <Button x:Name="btnBackspace" Content="←" FontSize="23" Background="white" HorizontalAlignment="Left" Margin="578,202,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnBackspace_Click"/>
-        <Label x:Name="lblPinyin" Content="" FontSize="19" Background="Cornsilk" HorizontalAlignment="Left" Height="37" Margin="22,136,0,0" VerticalAlignment="Top" Width="171"/>
-        <Button x:Name="btnSuggest1" Background="AliceBlue" HorizontalAlignment="Left" Margin="207,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest1_Click"/>
-        <Button x:Name="btnSuggest2" Background="AliceBlue" HorizontalAlignment="Left" Margin="256,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest2_Click"/>
-        <Button x:Name="btnSuggest3" Background="AliceBlue" HorizontalAlignment="Left" Margin="306,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest3_Click"/>
-        <Button x:Name="btnSuggest4" Background="AliceBlue" HorizontalAlignment="Left" Margin="356,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest4_Click"/>
-        <Button x:Name="btnSuggest5" Background="AliceBlue" HorizontalAlignment="Left" Margin="406,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest5_Click"/>
+        <Label x:Name="lblPinyin" Content="" FontSize="19" Background="Cornsilk" HorizontalAlignment="Left" Height="37" Margin="95,146,0,0" VerticalAlignment="Top" Width="170"/>
+        <Button x:Name="btnSuggest1" Background="AliceBlue" HorizontalAlignment="Left" Margin="329,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest1_Click"/>
+        <Button x:Name="btnSuggest2" Background="AliceBlue" HorizontalAlignment="Left" Margin="379,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest2_Click"/>
+        <Button x:Name="btnSuggest3" Background="AliceBlue" HorizontalAlignment="Left" Margin="429,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest3_Click"/>
+        <Button x:Name="btnSuggest4" Background="AliceBlue" HorizontalAlignment="Left" Margin="479,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest4_Click"/>
+        <Button x:Name="btnSuggest5" Background="AliceBlue" HorizontalAlignment="Left" Margin="529,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest5_Click"/>
         <Button x:Name="BtnConvert" Background="PaleGoldenrod" Content="⟹" FontSize="20" HorizontalAlignment="Left" Margin="369,34,0,0" VerticalAlignment="Top" Height="38" Width="50" Click="BtnConvert_Click"/>
-        <Button x:Name="btnSuggest6" Background="AliceBlue" HorizontalAlignment="Left" Margin="454,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest6_Click"/>
-        <Button x:Name="btnSuggest7" Background="AliceBlue" HorizontalAlignment="Left" Margin="504,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest7_Click"/>
-        <Button x:Name="btnSuggest8" Background="AliceBlue" HorizontalAlignment="Left" Margin="552,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest8_Click"/>
-        <Button x:Name="btnSuggest9" Background="AliceBlue" HorizontalAlignment="Left" Margin="599,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest9_Click"/>
-        <Button x:Name="btnSuggest10" Background="AliceBlue" HorizontalAlignment="Left" Margin="644,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest10_Click"/>
-        <Button x:Name="btnSuggest11" Background="AliceBlue" HorizontalAlignment="Left" Margin="687,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest11_Click"/>
-        <Button x:Name="btnSuggest12" Background="AliceBlue" HorizontalAlignment="Left" Margin="730,136,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest12_Click"/>
+        <Button x:Name="btnNextSuggest" Content="→" FontSize="23" Background="AliceBlue" HorizontalAlignment="Left" Margin="577,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnNextSuggest_Click"/>
+        <Button x:Name="btnBackSuggest" Content="←" FontSize="23" Background="AliceBlue" HorizontalAlignment="Left" Margin="276,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnBackSuggest_Click"/>
     </Grid>
 </Window>
