@@ -38,11 +38,12 @@ namespace Idiom_Translator
         public MainWindow()
         {
             InitializeComponent();
-            listWordRecords = methodReadWordsIntoList();
-            listVowelRecords = methodReadVowelsIntoList();
+            listWordRecords = readWordCSV();
+            listVowelRecords = readVowelCSV();
+            removeButtons();
         }
 
-        private List<Word> methodFindWord(string searchWord)
+        private List<Word> stringToList(string searchWord)
         {
             //list of all hanyu characters with matching pinyin 
             List<Word> e = new List<Word>();
@@ -61,7 +62,7 @@ namespace Idiom_Translator
         }
 
         //read 8105 entries from pinyin hanyu database
-        private List<Word> methodReadWordsIntoList()
+        private List<Word> readWordCSV()
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -77,7 +78,7 @@ namespace Idiom_Translator
         }
 
         //read 6 entries from tone on vowel database
-        private List<Vowels> methodReadVowelsIntoList()
+        private List<Vowels> readVowelCSV()
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -91,7 +92,7 @@ namespace Idiom_Translator
             }
         }
 
-        private string methodUpdateToneVowel(string searchWord, int tone)
+        private string replaceVowel(string searchWord, int tone)
         {
             //get last letter
             string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
@@ -104,27 +105,27 @@ namespace Idiom_Translator
                     if (record.vowel.Equals(lastLetter))
                     {
                         //remove the last letter
-                        searchWord = methodRemoveLastLetter(searchWord);
-                        if (tone == 1) { searchWord = methodUpdateSearchWord(searchWord, record.vowelTone1); }
-                        else if (tone == 2) { searchWord = methodUpdateSearchWord(searchWord, record.vowelTone2); }
-                        else if (tone == 3) { searchWord = methodUpdateSearchWord(searchWord, record.vowelTone3); }
-                        else if (tone == 4) { searchWord = methodUpdateSearchWord(searchWord, record.vowelTone4); }
+                        searchWord = removeLastLetter(searchWord);
+                        if (tone == 1) { searchWord = buildString(searchWord, record.vowelTone1); }
+                        else if (tone == 2) { searchWord = buildString(searchWord, record.vowelTone2); }
+                        else if (tone == 3) { searchWord = buildString(searchWord, record.vowelTone3); }
+                        else if (tone == 4) { searchWord = buildString(searchWord, record.vowelTone4); }
                     }
                 }
             }
             return searchWord;
         }
-        private string methodRemoveLastLetter(string searchWord)
+        private string removeLastLetter(string searchWord)
         {
             return searchWord.Substring(0, searchWord.Length - 1);
         }
-        private string methodUpdateSearchWord(string searchWord, string letter)
+        private string buildString(string searchWord, string letter)
         {
             searchWord += letter;
             lblPinyin.Content = searchWord;
             return searchWord;
         }
-        private List<Word> methodSortWordList(List<Word> listSearchWord)
+        private List<Word> sortList(List<Word> listSearchWord)
         {
             for (int i = 1; i < listSearchWord.Count; i++)
             {
@@ -146,7 +147,7 @@ namespace Idiom_Translator
             }
             return listSearchWord;
         }
-        private Dictionary<int, List<Word>> methodPopulateDictionarySearchWord(List<Word> listSearchWord)
+        private Dictionary<int, List<Word>> makeDict(List<Word> listSearchWord)
         {
             Dictionary<int, List<Word>> dictionarySearchWord = new Dictionary<int, List<Word>>();
             if (listSearchWord.Count <= 5)
@@ -181,353 +182,529 @@ namespace Idiom_Translator
             }
             return dictionarySearchWord;
         }
-        private List<Word> methodGetPageSearchWord(Dictionary<int, List<Word>> dictionarySearchWord, int index)
+        private List<Word> keyList(Dictionary<int, List<Word>> dictionarySearchWord, int index)
         {
             return dictionarySearchWord[index];
         }
-        private void updateSuggestions(List<Word> listPageSearchWord)
+        private void showButtonValue(List<Word> listPageSearchWord)
+        {
+            if (listPageSearchWord.Count == 1)
+            {
+                btnSuggest1.Content = Regex.Unescape(listPageSearchWord[0].Unicode);
+            }
+            else if (listPageSearchWord.Count == 2)
+            {
+                btnSuggest1.Content = Regex.Unescape(listPageSearchWord[0].Unicode);
+                btnSuggest2.Content = Regex.Unescape(listPageSearchWord[1].Unicode);
+            }
+            else if (listPageSearchWord.Count == 3)
+            {
+                btnSuggest1.Content = Regex.Unescape(listPageSearchWord[0].Unicode);
+                btnSuggest2.Content = Regex.Unescape(listPageSearchWord[1].Unicode);
+                btnSuggest3.Content = Regex.Unescape(listPageSearchWord[2].Unicode);
+            }
+            else if (listPageSearchWord.Count == 4)
+            {
+                btnSuggest1.Content = Regex.Unescape(listPageSearchWord[0].Unicode);
+                btnSuggest2.Content = Regex.Unescape(listPageSearchWord[1].Unicode);
+                btnSuggest3.Content = Regex.Unescape(listPageSearchWord[2].Unicode);
+                btnSuggest4.Content = Regex.Unescape(listPageSearchWord[3].Unicode);
+            }
+            else if (listPageSearchWord.Count == 5)
+            {
+                btnSuggest1.Content = Regex.Unescape(listPageSearchWord[0].Unicode);
+                btnSuggest2.Content = Regex.Unescape(listPageSearchWord[1].Unicode);
+                btnSuggest3.Content = Regex.Unescape(listPageSearchWord[2].Unicode);
+                btnSuggest4.Content = Regex.Unescape(listPageSearchWord[3].Unicode);
+                btnSuggest5.Content = Regex.Unescape(listPageSearchWord[4].Unicode);
+            }
+        }
+        private void displayButton(int pageCounter, int numItems)
+        {
+        }
+        private void removeButtons()
         {
             btnSuggest1.Visibility = Visibility.Hidden;
             btnSuggest2.Visibility = Visibility.Hidden;
             btnSuggest3.Visibility = Visibility.Hidden;
             btnSuggest4.Visibility = Visibility.Hidden;
             btnSuggest5.Visibility = Visibility.Hidden;
-
-            if (listPageSearchWord.Count == 1)
-            {
-                btnSuggest1.Visibility = Visibility.Visible;
-                btnSuggest1.Content = listPageSearchWord[0].Frequency;
-            }
-            else if (listPageSearchWord.Count == 2)
-            {
-                btnSuggest1.Visibility = Visibility.Visible;
-                btnSuggest2.Visibility = Visibility.Visible;
-                btnSuggest1.Content = listPageSearchWord[0].Frequency;
-                btnSuggest2.Content = listPageSearchWord[1].Frequency;
-            }
-            else if (listPageSearchWord.Count == 3)
-            {
-                btnSuggest1.Visibility = Visibility.Visible;
-                btnSuggest2.Visibility = Visibility.Visible;
-                btnSuggest3.Visibility = Visibility.Visible;
-                btnSuggest1.Content = listPageSearchWord[0].Frequency;
-                btnSuggest2.Content = listPageSearchWord[1].Frequency;
-                btnSuggest3.Content = listPageSearchWord[2].Frequency;
-            }
-            else if (listPageSearchWord.Count == 4)
-            {
-                btnSuggest1.Visibility = Visibility.Visible;
-                btnSuggest2.Visibility = Visibility.Visible;
-                btnSuggest3.Visibility = Visibility.Visible;
-                btnSuggest4.Visibility = Visibility.Visible;
-                btnSuggest1.Content = listPageSearchWord[0].Frequency;
-                btnSuggest2.Content = listPageSearchWord[1].Frequency;
-                btnSuggest3.Content = listPageSearchWord[2].Frequency;
-                btnSuggest4.Content = listPageSearchWord[3].Frequency;
-            }
-            else if (listPageSearchWord.Count == 5)
-            {
-                btnSuggest1.Visibility = Visibility.Visible;
-                btnSuggest2.Visibility = Visibility.Visible;
-                btnSuggest3.Visibility = Visibility.Visible;
-                btnSuggest4.Visibility = Visibility.Visible;
-                btnSuggest5.Visibility = Visibility.Visible;
-                btnSuggest1.Content = listPageSearchWord[0].Frequency;
-                btnSuggest2.Content = listPageSearchWord[1].Frequency;
-                btnSuggest3.Content = listPageSearchWord[2].Frequency;
-                btnSuggest4.Content = listPageSearchWord[3].Frequency;
-                btnSuggest5.Content = listPageSearchWord[4].Frequency;
-            }
+            btnNextSuggest.Visibility = Visibility.Hidden;
+            btnBackSuggest.Visibility = Visibility.Hidden;
         }
         private void btnSuggest1_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = listPageSearchWord[0].Frequency;
+            txtSource.Text = Regex.Unescape(listPageSearchWord[0].Unicode); 
         }
 
         private void btnSuggest5_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = listPageSearchWord[4].Frequency;
+            txtSource.Text = Regex.Unescape(listPageSearchWord[4].Unicode); ;
         }
 
         private void btnSuggest4_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = listPageSearchWord[3].Frequency;
+            txtSource.Text = Regex.Unescape(listPageSearchWord[3].Unicode);
         }
 
         private void btnSuggest3_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = listPageSearchWord[2].Frequency;
+            txtSource.Text = Regex.Unescape(listPageSearchWord[2].Unicode);
         }
 
         private void btnSuggest2_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = listPageSearchWord[1].Frequency;
+            txtSource.Text = Regex.Unescape(listPageSearchWord[1].Unicode);
         }
 
         private void btnQ_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "q");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "q");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnW_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "w");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "w");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnE_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "e");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "e");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnR_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "r");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "r");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnT_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "t");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "t");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnY_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "y");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "y");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnU_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "u");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "u");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnI_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "i");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "i");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnO_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "o");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "o");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnP_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "p");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "p");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnA_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "a");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "a");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnS_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "s");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "s");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnD_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "d");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "d");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnF_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "f");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "f");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnG_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "g");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "g");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnH_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "h");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "h");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnJ_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "j");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "j");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnK_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "k");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "k");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnL_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "l");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "l");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnZ_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "z");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "z");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnX_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "x");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "x");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnC_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "c");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "c");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnV_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "v");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "v");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnB_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "b");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "b");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnN_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "n");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "n");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnM_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "m");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "m");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnUdot_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "ü");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "ü");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnExclamation_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "!");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "!");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnSpace_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, " ");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, " ");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnComma_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, ",");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, ",");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnPeriod_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, ".");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, ".");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnQuestion_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "?");
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "?");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnTone1_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord=methodUpdateToneVowel(stringSearchWord,1);
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord=replaceVowel(stringSearchWord,1);
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnTone2_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateToneVowel(stringSearchWord,2);
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = replaceVowel(stringSearchWord,2);
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnTone3_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateToneVowel(stringSearchWord,3);
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = replaceVowel(stringSearchWord,3);
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnTone4_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodUpdateToneVowel(stringSearchWord,4);
-            listSearchWord = methodFindWord(stringSearchWord);
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = replaceVowel(stringSearchWord,4);
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnBackspace_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = methodRemoveLastLetter(stringSearchWord);
-            stringSearchWord = methodUpdateSearchWord(stringSearchWord, "");
-            listSearchWord = methodSortWordList(listSearchWord);
+            stringSearchWord = removeLastLetter(stringSearchWord);
+            stringSearchWord = buildString(stringSearchWord, "");
+            listSearchWord = stringToList(stringSearchWord);
+            listSearchWord = sortList(listSearchWord);
+            //display suggestions
+            dictionarySearchWord = makeDict(listSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            removeButtons();
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
-            dictionarySearchWord = methodPopulateDictionarySearchWord(listSearchWord);
-            listPageSearchWord = methodGetPageSearchWord(dictionarySearchWord, pageCounter);
-            updateSuggestions(listPageSearchWord);
+            
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
@@ -546,8 +723,8 @@ namespace Idiom_Translator
             if (pageCounter > listSearchWord.Count/5 + 1) { 
                 pageCounter = listSearchWord.Count / 5 + 1; 
             }
-            listPageSearchWord = methodGetPageSearchWord(dictionarySearchWord, pageCounter);
-            updateSuggestions(listPageSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            showButtonValue(listPageSearchWord);
         }
 
         private void btnBackSuggest_Click(object sender, RoutedEventArgs e)
@@ -556,8 +733,8 @@ namespace Idiom_Translator
             if (pageCounter < 1) { 
                 pageCounter = 1; 
             }
-            listPageSearchWord = methodGetPageSearchWord(dictionarySearchWord, pageCounter);
-            updateSuggestions(listPageSearchWord);
+            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
+            showButtonValue(listPageSearchWord);
         }
     }
 }
