@@ -26,165 +26,30 @@ namespace Idiom_Translator
     /// </summary>
     public partial class MainWindow : Window
     {
-        string stringSearchWord="";
-        List<Word> listSearchWord;
-        Dictionary<int, List<Word>> dictionarySearchWord;
-        List<Word> listPageSearchWord;
-        static string stringVowels = "aeiouü";
-        static List<Word> listWordRecords;
-        static List<Vowels> listVowelRecords;
+        //all variables are accessible by 
+        //input as a string of pinyin 
+        string pinyin="";
+        //output as a list of hanzi 
+        List<Word> longWordList;
+        //output organized as dictionary
+        Dictionary<int, List<Word>> wordDict;
+        //single dictionary key's list value
+        List<Word> shortWordList;
+        //reference vowels
+        public static string vowels = "aeiouü";
+        //store the contents of "pinying hanzi.csv"
+        List<Word> wordRecords;
+        //store contents of "tones on vowels.csv"
+        List<Vowels> vowelRecords;
+        //store current key in dictionary
         int pageCounter = 1;
 
         public MainWindow()
         {
             InitializeComponent();
-            listWordRecords = readWordCSV();
-            listVowelRecords = readVowelCSV();
+            wordRecords = Methods.readWordCSV();
+            vowelRecords = Methods.readVowelCSV();
             removeButtons();
-        }
-
-        private List<Word> stringToList(string searchWord)
-        {
-            //list of all hanyu characters with matching pinyin 
-            List<Word> e = new List<Word>();
-            //search all matching pinyin in List
-            foreach (var record in listWordRecords)
-            {
-                //proceed if there is a matching pinyin in Record
-                if (record.Pinyin.Equals(searchWord))
-                {
-                    //add pinyin's corresponding hanyu to List
-                    e.Add(record);
-                } 
-            }
-            //may return empty list
-            return e;
-        }
-
-        //read 8105 entries from pinyin hanyu database
-        private List<Word> readWordCSV()
-        {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = false,
-            };
-
-            using (var reader = new StreamReader("list of pinyin hanyu.csv"))
-            using (var csv = new CsvReader(reader, config))
-            {
-                var records = csv.GetRecords<Word>();
-                return records.ToList();
-            }
-        }
-
-        //read 6 entries from tone on vowel database
-        private List<Vowels> readVowelCSV()
-        {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = false,
-            };
-            using (var reader = new StreamReader("tones on vowels.csv"))
-            using (var csv = new CsvReader(reader, config))
-            {
-                var tonedVowels = csv.GetRecords<Vowels>();
-                return tonedVowels.ToList();
-            }
-        }
-
-        private string replaceVowel(string searchWord, int tone)
-        {
-            //get last letter
-            string lastLetter = searchWord.Substring(searchWord.Length - 1, 1);
-            //proceed if the letter is vowel
-            if (stringVowels.Contains(lastLetter))
-            {
-                foreach (var record in listVowelRecords)
-                {
-                    //specify which vowel to tone
-                    if (record.vowel.Equals(lastLetter))
-                    {
-                        //remove the last letter
-                        searchWord = removeLastLetter(searchWord);
-                        if (tone == 1) { searchWord = buildString(searchWord, record.vowelTone1); }
-                        else if (tone == 2) { searchWord = buildString(searchWord, record.vowelTone2); }
-                        else if (tone == 3) { searchWord = buildString(searchWord, record.vowelTone3); }
-                        else if (tone == 4) { searchWord = buildString(searchWord, record.vowelTone4); }
-                    }
-                }
-            }
-            return searchWord;
-        }
-        private string removeLastLetter(string searchWord)
-        {
-            return searchWord.Substring(0, searchWord.Length - 1);
-        }
-        private string buildString(string searchWord, string letter)
-        {
-            searchWord += letter;
-            lblPinyin.Content = searchWord;
-            return searchWord;
-        }
-        private List<Word> sortList(List<Word> listSearchWord)
-        {
-            for (int i = 1; i < listSearchWord.Count; i++)
-            {
-                var key = listSearchWord[i];
-                var k = Int32.TryParse(key.Frequency, out int keyFreq);
-                if (!k) { keyFreq = 10000 + i; }
-                var flag = 0;
-                for (int j = i - 1; j >= 0 && flag != 1;j--)
-                {
-                    var adj = listSearchWord[j];
-                    var a = Int32.TryParse(adj.Frequency, out int adjFreq);
-                    if (!a) { adjFreq = 10000 + j; }
-                    if (keyFreq < adjFreq)
-                    {
-                        listSearchWord[j+1] = adj;
-                        listSearchWord[j] = key;
-                    } else { flag = 1; }
-                }
-            }
-            return listSearchWord;
-        }
-        private Dictionary<int, List<Word>> makeDict(List<Word> listSearchWord)
-        {
-            Dictionary<int, List<Word>> dictionarySearchWord = new Dictionary<int, List<Word>>();
-            if (listSearchWord.Count <= 5)
-            {
-                dictionarySearchWord.Add(1, listSearchWord);
-            }
-            else if (listSearchWord.Count > 5 && listSearchWord.Count <= 10)
-            {
-                dictionarySearchWord.Add(1, listSearchWord.GetRange(0, 5));
-                dictionarySearchWord.Add(2, listSearchWord.GetRange(5, listSearchWord.Count - 5));
-            }
-            else if (listSearchWord.Count > 10 && listSearchWord.Count <= 15)
-            {
-                dictionarySearchWord.Add(1, listSearchWord.GetRange(0, 5));
-                dictionarySearchWord.Add(2, listSearchWord.GetRange(5, 5));
-                dictionarySearchWord.Add(3, listSearchWord.GetRange(10, listSearchWord.Count - 10));
-            }
-            else if (listSearchWord.Count > 15 && listSearchWord.Count <= 20)
-            {
-                dictionarySearchWord.Add(1, listSearchWord.GetRange(0, 5));
-                dictionarySearchWord.Add(2, listSearchWord.GetRange(5, 5));
-                dictionarySearchWord.Add(3, listSearchWord.GetRange(10, 5));
-                dictionarySearchWord.Add(4, listSearchWord.GetRange(15, listSearchWord.Count - 15));
-            }
-            else if (listSearchWord.Count > 20 && listSearchWord.Count <= 25)
-            {
-                dictionarySearchWord.Add(1, listSearchWord.GetRange(0, 5));
-                dictionarySearchWord.Add(2, listSearchWord.GetRange(5, 5));
-                dictionarySearchWord.Add(3, listSearchWord.GetRange(10, 5));
-                dictionarySearchWord.Add(4, listSearchWord.GetRange(15, 5));
-                dictionarySearchWord.Add(4, listSearchWord.GetRange(20, listSearchWord.Count - 20));
-            }
-            return dictionarySearchWord;
-        }
-        private List<Word> keyList(Dictionary<int, List<Word>> dictionarySearchWord, int index)
-        {
-            return dictionarySearchWord[index];
         }
         private void showButtonValue(List<Word> listPageSearchWord)
         {
@@ -219,9 +84,7 @@ namespace Idiom_Translator
                 btnSuggest5.Content = Regex.Unescape(listPageSearchWord[4].Unicode);
             }
         }
-        private void displayButton(int pageCounter, int numItems)
-        {
-        }
+
         private void removeButtons()
         {
             btnSuggest1.Visibility = Visibility.Hidden;
@@ -232,474 +95,405 @@ namespace Idiom_Translator
             btnNextSuggest.Visibility = Visibility.Hidden;
             btnBackSuggest.Visibility = Visibility.Hidden;
         }
+        
+        private void displayButtons(int pageCounter, int totalPagesCounter, int numItems)
+        {
+            //next button visibility
+            if (pageCounter == totalPagesCounter)
+            {
+                btnNextSuggest.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                btnNextSuggest.Visibility = Visibility.Visible;
+            }
+            //back button visibility
+            if (pageCounter == 1)
+            {
+                btnBackSuggest.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                btnBackSuggest.Visibility = Visibility.Visible;
+            }
+            if (numItems == 1)
+            {
+                btnSuggest1.Visibility = Visibility.Visible;
+                btnSuggest2.Visibility = Visibility.Hidden;
+                btnSuggest3.Visibility = Visibility.Hidden;
+                btnSuggest4.Visibility = Visibility.Hidden;
+                btnSuggest5.Visibility = Visibility.Hidden;
+            }
+            else if (numItems == 2)
+            {
+                btnSuggest1.Visibility = Visibility.Visible;
+                btnSuggest2.Visibility = Visibility.Visible;
+                btnSuggest3.Visibility = Visibility.Hidden;
+                btnSuggest4.Visibility = Visibility.Hidden;
+                btnSuggest5.Visibility = Visibility.Hidden;
+            }
+            else if (numItems == 3)
+            {
+                btnSuggest1.Visibility = Visibility.Visible;
+                btnSuggest2.Visibility = Visibility.Visible;
+                btnSuggest3.Visibility = Visibility.Visible;
+                btnSuggest4.Visibility = Visibility.Hidden;
+                btnSuggest5.Visibility = Visibility.Hidden;
+            }
+            else if (numItems == 4)
+            {
+                btnSuggest1.Visibility = Visibility.Visible;
+                btnSuggest2.Visibility = Visibility.Visible;
+                btnSuggest3.Visibility = Visibility.Visible;
+                btnSuggest4.Visibility = Visibility.Visible;
+                btnSuggest5.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                btnSuggest1.Visibility = Visibility.Visible;
+                btnSuggest2.Visibility = Visibility.Visible;
+                btnSuggest3.Visibility = Visibility.Visible;
+                btnSuggest4.Visibility = Visibility.Visible;
+                btnSuggest5.Visibility = Visibility.Visible;
+            }
+        }
         private void btnSuggest1_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(listPageSearchWord[0].Unicode); 
+            txtSource.Text = Regex.Unescape(shortWordList[0].Unicode); 
         }
 
         private void btnSuggest5_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(listPageSearchWord[4].Unicode); ;
+            txtSource.Text = Regex.Unescape(shortWordList[4].Unicode); ;
         }
 
         private void btnSuggest4_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(listPageSearchWord[3].Unicode);
+            txtSource.Text = Regex.Unescape(shortWordList[3].Unicode);
         }
 
         private void btnSuggest3_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(listPageSearchWord[2].Unicode);
+            txtSource.Text = Regex.Unescape(shortWordList[2].Unicode);
         }
 
         private void btnSuggest2_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(listPageSearchWord[1].Unicode);
+            txtSource.Text = Regex.Unescape(shortWordList[1].Unicode);
         }
 
         private void btnQ_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "q");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "q");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnW_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "w");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "w");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnE_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "e");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "e");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnR_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "r");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "r");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnT_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "t");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "t");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnY_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "y");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "y");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnU_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "u");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "u");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnI_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "i");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "i");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnO_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "o");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "o");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnP_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "p");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "p");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnA_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "a");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "a");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnS_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "s");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "s");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnD_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "d");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "d");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnF_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "f");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "f");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnG_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "g");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "g");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnH_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "h");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "h");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnJ_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "j");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "j");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnK_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "k");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "k");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnL_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "l");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "l");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnZ_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "z");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "z");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnX_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "x");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "x");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnC_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "c");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "c");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnV_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "v");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "v");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnB_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "b");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "b");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnN_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "n");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "n");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnM_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "m");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "m");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnUdot_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "ü");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.buildString(pinyin, "ü");
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnExclamation_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "!");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
         }
 
         private void btnSpace_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, " ");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
         }
 
         private void btnComma_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, ",");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
         }
 
         private void btnPeriod_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, ".");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
         }
 
         private void btnQuestion_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = buildString(stringSearchWord, "?");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
         }
 
         private void btnTone1_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord=replaceVowel(stringSearchWord,1);
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin=Methods.replaceVowel(pinyin,1, vowelRecords);
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnTone2_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = replaceVowel(stringSearchWord,2);
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.replaceVowel(pinyin, 1, vowelRecords);
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnTone3_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = replaceVowel(stringSearchWord,3);
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.replaceVowel(pinyin, 1, vowelRecords);
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnTone4_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = replaceVowel(stringSearchWord,4);
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            pinyin = Methods.replaceVowel(pinyin, 1, vowelRecords);
+            lblPinyin.Content = pinyin;
+            Methods.searchWord(pinyin, pageCounter, wordRecords);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnBackspace_Click(object sender, RoutedEventArgs e)
         {
-            stringSearchWord = removeLastLetter(stringSearchWord);
-            stringSearchWord = buildString(stringSearchWord, "");
-            listSearchWord = stringToList(stringSearchWord);
-            listSearchWord = sortList(listSearchWord);
-            //display suggestions
-            dictionarySearchWord = makeDict(listSearchWord);
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            removeButtons();
-            showButtonValue(listPageSearchWord);
+            //if search word is nothing, then remove suggestion buttons
+            if (pinyin.Equals(""))
+            {
+                removeButtons();
+            } else
+            {
+                pinyin = Methods.removeLastLetter(pinyin);
+                pinyin = Methods.buildString(pinyin, "");
+                lblPinyin.Content = pinyin;
+                Methods.searchWord(pinyin, pageCounter, wordRecords);
+            }
         }
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
@@ -720,11 +514,12 @@ namespace Idiom_Translator
         private void btnNextSuggest_Click(object sender, RoutedEventArgs e)
         {
             pageCounter++;
-            if (pageCounter > listSearchWord.Count/5 + 1) { 
-                pageCounter = listSearchWord.Count / 5 + 1; 
+            if (pageCounter > longWordList.Count / 5 + 1) { 
+                pageCounter = longWordList.Count / 5 + 1; 
             }
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            showButtonValue(listPageSearchWord);
+            shortWordList = Methods.keyList(wordDict, pageCounter);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
 
         private void btnBackSuggest_Click(object sender, RoutedEventArgs e)
@@ -733,8 +528,9 @@ namespace Idiom_Translator
             if (pageCounter < 1) { 
                 pageCounter = 1; 
             }
-            listPageSearchWord = keyList(dictionarySearchWord, pageCounter);
-            showButtonValue(listPageSearchWord);
+            shortWordList = Methods.keyList(wordDict, pageCounter);
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count);
+            showButtonValue(shortWordList);
         }
     }
 }
