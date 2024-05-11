@@ -31,18 +31,25 @@ namespace Idiom_Translator
             //may return empty list
             return e;
         }
-        public static void searchWord(string pinyin, int pageCounter, List<Word> wordRecords)
+        public static Tuple<Dictionary<int, List<Word>>,List<Word>> searchWord(string pinyin, int pageCounter, List<Word> wordRecords)
         {
+            List<Word> longWordList = new List<Word>();
+            Dictionary<int, List<Word>> wordDict = new Dictionary<int, List<Word>>();
+            List<Word> shortWordList = new List<Word>();
             //if there is less than 2 letters, do not search for pinyin
             if (pinyin.Length > 1)
             {
-                List<Word> longWordList = Methods.stringToList(pinyin, wordRecords);
+                longWordList = Methods.stringToList(pinyin, wordRecords);
                 longWordList = Methods.sortList(longWordList);
                 //display suggestions
-                Dictionary<int, List<Word>> wordDict = makeDict(longWordList);
-                List<Word> shortWordList = keyList(wordDict, pageCounter);
-
+                wordDict = makeDict(longWordList);
+                if (wordDict.Count != 0)
+                {
+                    shortWordList = keyList(wordDict, pageCounter);
+                }
+                return new Tuple<Dictionary<int, List <Word>>, List<Word>>(wordDict, shortWordList);
             }
+            return new Tuple<Dictionary<int, List<Word>>, List<Word>>(wordDict, shortWordList);
         }
         public static string buildString(string searchWord, string letter)
         {
