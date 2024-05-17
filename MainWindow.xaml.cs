@@ -26,24 +26,31 @@ namespace Idiom_Translator
     /// </summary>
     public partial class MainWindow : Window
     {
-        //all variables are accessible by 
         //input as a string of pinyin 
         string pinyin="";
-        //output as a list of hanzi 
+
+        //list of all searched Words
         List<Word> longWordList;
-        //output organized as dictionary
+        
+        //dictionary of all searched Words
         Dictionary<int, List<Word>> wordDict;
-        //a single page in dictionary
+        
+        //list of some searched Words
         List<Word> shortWordList = new List<Word>();
+        
         //reference vowels
         public static string vowels = "aeiouü";
-        //store the contents of "pinying hanzi.csv"
+        
+        //list of all Words
         List<Word> wordRecords;
-        //store contents of "tones on vowels.csv"
+        
+        //list of all Vowels
         List<Vowels> vowelRecords;
-        //store current key in dictionary
+        
+        //which key of dictionary to display
         int pageCounter = 1;
-        //Tuple to store dictionary and a single page
+        
+        //dictionary of all search Words and list of some search Words
         Tuple<Dictionary<int, List<Word>>, List<Word>> wordDict_shortList;
 
         public MainWindow()
@@ -110,7 +117,6 @@ namespace Idiom_Translator
             {
                 if (numItems > 0)
                 {
-                    //next button visibility
                     if (pageCounter == totalPagesCounter)
                     {
                         btnNextSuggest.Visibility = Visibility.Hidden;
@@ -119,7 +125,6 @@ namespace Idiom_Translator
                     {
                         btnNextSuggest.Visibility = Visibility.Visible;
                     }
-                    //back button visibility
                     if (pageCounter == 1)
                     {
                         btnBackSuggest.Visibility = Visibility.Hidden;
@@ -566,7 +571,6 @@ namespace Idiom_Translator
 
         private void btnBackspace_Click(object sender, RoutedEventArgs e)
         {
-            //if search word is nothing, then remove suggestion buttons
             if (!pinyin.Equals(""))
             {
                 pinyin = Methods.removeLastLetter(pinyin);
