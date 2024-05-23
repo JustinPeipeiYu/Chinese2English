@@ -1,7 +1,7 @@
-﻿<Application x:Class="Idiom_Translator.App"
+﻿<Application x:Class="Rudimentary_Chinese_English.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Idiom_Translator"
+             xmlns:local="clr-namespace:Rudimentary_Chinese_English"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

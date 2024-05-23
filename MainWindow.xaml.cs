@@ -19,39 +19,43 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Security.Policy;
 
-namespace Idiom_Translator
+namespace Rudimentary_Chinese_English
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        //input as a string of pinyin 
+        //search query
         string pinyin="";
 
-        //list of all searched Words
+        //list of the searched Words
         List<Word> longWordList;
         
-        //dictionary of all searched Words
+        //dictionary of the searched Words
         Dictionary<int, List<Word>> wordDict;
         
-        //list of some searched Words
+        //list of 5 searched Words
         List<Word> shortWordList = new List<Word>();
         
-        //reference vowels
+        //vowels
         public static string vowels = "aeiouü";
         
-        //list of all Words
+        //list of all Words in the record
         List<Word> wordRecords;
         
-        //list of all Vowels
+        //list of all Vowels in record
         List<Vowels> vowelRecords;
         
-        //which key of dictionary to display
+        //the key of the dictionary to display
         int pageCounter = 1;
         
-        //dictionary of all search Words and list of some search Words
+        //dictionary of all search Words and list of 5 search Words
         Tuple<Dictionary<int, List<Word>>, List<Word>> wordDict_shortList;
+
+        //source phrase
+        string sourcePhrase = string.Empty;
+
 
         public MainWindow()
         {
@@ -178,31 +182,38 @@ namespace Idiom_Translator
         }
         private void btnSuggest1_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(shortWordList[0].Unicode); 
+            sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[0].Unicode);
+            txtSource.Text = Regex.Unescape(sourcePhrase); 
         }
 
         private void btnSuggest5_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(shortWordList[4].Unicode); ;
+            sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[4].Unicode);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnSuggest4_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(shortWordList[3].Unicode);
+            sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[3].Unicode);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnSuggest3_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(shortWordList[2].Unicode);
+            sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[2].Unicode);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnSuggest2_Click(object sender, RoutedEventArgs e)
         {
-            txtSource.Text = Regex.Unescape(shortWordList[1].Unicode);
+            sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[1].Unicode);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnQ_Click(object sender, RoutedEventArgs e)
         {
+            //remove buttons temporarily
+            removeButtons();
             //add letter to the search string
             pinyin = Methods.buildString(pinyin, "q");
             //display search string on the label
@@ -221,6 +232,7 @@ namespace Idiom_Translator
 
         private void btnW_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "w");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -232,6 +244,7 @@ namespace Idiom_Translator
 
         private void btnE_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "e");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -243,6 +256,7 @@ namespace Idiom_Translator
 
         private void btnR_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "r");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -254,6 +268,7 @@ namespace Idiom_Translator
 
         private void btnT_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "t");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -265,6 +280,7 @@ namespace Idiom_Translator
 
         private void btnY_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "y");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -276,6 +292,7 @@ namespace Idiom_Translator
 
         private void btnU_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "u");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -287,6 +304,7 @@ namespace Idiom_Translator
 
         private void btnI_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "i");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -298,6 +316,7 @@ namespace Idiom_Translator
 
         private void btnO_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "o");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -309,6 +328,7 @@ namespace Idiom_Translator
 
         private void btnP_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "p");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -320,6 +340,7 @@ namespace Idiom_Translator
 
         private void btnA_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "a");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -331,6 +352,7 @@ namespace Idiom_Translator
 
         private void btnS_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "s");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -342,6 +364,7 @@ namespace Idiom_Translator
 
         private void btnD_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "d");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -353,6 +376,7 @@ namespace Idiom_Translator
 
         private void btnF_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "f");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -364,6 +388,7 @@ namespace Idiom_Translator
 
         private void btnG_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "g");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -375,6 +400,7 @@ namespace Idiom_Translator
 
         private void btnH_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "h");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -386,6 +412,7 @@ namespace Idiom_Translator
 
         private void btnJ_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "j");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -397,6 +424,7 @@ namespace Idiom_Translator
 
         private void btnK_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "k");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -408,6 +436,7 @@ namespace Idiom_Translator
 
         private void btnL_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "l");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -419,6 +448,7 @@ namespace Idiom_Translator
 
         private void btnZ_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "z");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -430,6 +460,7 @@ namespace Idiom_Translator
 
         private void btnX_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "x");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -441,6 +472,7 @@ namespace Idiom_Translator
 
         private void btnC_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "c");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -452,6 +484,7 @@ namespace Idiom_Translator
 
         private void btnV_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "v");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -463,6 +496,7 @@ namespace Idiom_Translator
 
         private void btnB_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "b");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -474,6 +508,7 @@ namespace Idiom_Translator
 
         private void btnN_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "n");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -485,6 +520,7 @@ namespace Idiom_Translator
 
         private void btnM_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "m");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -496,6 +532,7 @@ namespace Idiom_Translator
 
         private void btnUdot_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.buildString(pinyin, "ü");
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -507,27 +544,38 @@ namespace Idiom_Translator
 
         private void btnExclamation_Click(object sender, RoutedEventArgs e)
         {
+            sourcePhrase = Methods.addExclamationMark(sourcePhrase);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnSpace_Click(object sender, RoutedEventArgs e)
         {
+            sourcePhrase = Methods.addSpace(sourcePhrase);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnComma_Click(object sender, RoutedEventArgs e)
         {
+            sourcePhrase = Methods.addComma(sourcePhrase);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnPeriod_Click(object sender, RoutedEventArgs e)
         {
+            sourcePhrase = Methods.addPeriod(sourcePhrase);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnQuestion_Click(object sender, RoutedEventArgs e)
         {
+            sourcePhrase = Methods.addQuestionMark(sourcePhrase);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnTone1_Click(object sender, RoutedEventArgs e)
         {
-            pinyin=Methods.replaceVowel(pinyin,1, vowelRecords);
+            removeButtons();
+            pinyin =Methods.replaceVowel(pinyin,1, vowelRecords);
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
             wordDict = wordDict_shortList.Item1;
@@ -538,6 +586,7 @@ namespace Idiom_Translator
 
         private void btnTone2_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.replaceVowel(pinyin, 2, vowelRecords);
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -549,6 +598,7 @@ namespace Idiom_Translator
 
         private void btnTone3_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.replaceVowel(pinyin, 3, vowelRecords);
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -560,6 +610,7 @@ namespace Idiom_Translator
 
         private void btnTone4_Click(object sender, RoutedEventArgs e)
         {
+            removeButtons();
             pinyin = Methods.replaceVowel(pinyin, 4, vowelRecords);
             lblPinyin.Content = pinyin;
             wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
@@ -574,34 +625,32 @@ namespace Idiom_Translator
             if (!pinyin.Equals(""))
             {
                 pinyin = Methods.removeLastLetter(pinyin);
-                pinyin = Methods.buildString(pinyin, "");
-                lblPinyin.Content = pinyin;
-                wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
-                wordDict = wordDict_shortList.Item1;
-                shortWordList = wordDict_shortList.Item2;
-                displayButtons(pageCounter, wordDict.Count, shortWordList.Count, pinyin);
-                showButtonValue(shortWordList, pinyin);
             }
-            if (pinyin.Equals(""))
-            {
-                removeButtons();
-                wordDict.Clear();
-            }
+            removeButtons();
+            lblPinyin.Content = pinyin;
+            pageCounter = 1;
+            wordDict_shortList = Methods.searchWord(pinyin, pageCounter, wordRecords);
+            wordDict = wordDict_shortList.Item1;
+            shortWordList = wordDict_shortList.Item2;
+            displayButtons(pageCounter, wordDict.Count, shortWordList.Count, pinyin);
+            showButtonValue(shortWordList, pinyin);
         }
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
-            
+            sourcePhrase = Methods.addNewLine(sourcePhrase);
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-
+            sourcePhrase = string.Empty;
+            txtSource.Text = Regex.Unescape(sourcePhrase);
         }
 
         private void BtnConvert_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void btnNextSuggest_Click(object sender, RoutedEventArgs e)

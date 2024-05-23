@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Idiom_Translator.Properties
+namespace Rudimentary_Chinese_English.Properties
 {
 
 

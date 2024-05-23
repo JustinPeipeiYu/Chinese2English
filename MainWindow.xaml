@@ -1,11 +1,11 @@
-﻿<Window x:Class="Idiom_Translator.MainWindow"
+﻿<Window x:Class="Rudimentary_Chinese_English.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Idiom_Translator"
+        xmlns:local="clr-namespace:Rudimentary_Chinese_English"
         mc:Ignorable="d"
-        Title="Idiom Translator" ResizeMode="NoResize" Height="450" Width="800" Background="CornflowerBlue">
+        Title="Rudimentary Chinese English" ResizeMode="NoResize" Height="460" Width="800" Background="CornflowerBlue">
     <Grid Margin="0,10,0,0">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -14,7 +14,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="btnSpace" Content="" HorizontalAlignment="Left" Margin="222,361,0,0" VerticalAlignment="Top" Width="228" Height="37" Click="btnSpace_Click"/>
-        <TextBlock x:Name="txtSource" HorizontalAlignment="Left" Margin="22,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="342" Height="111" Background="white"/>
+        <TextBlock x:Name="txtSource" HorizontalAlignment="Left" Margin="22,-5,0,0" TextWrapping="Wrap" FontSize="25" VerticalAlignment="Top" Width="342" Height="111" Background="white"/>
         <TextBlock x:Name="txtTarget" HorizontalAlignment="Left" Margin="424,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="white" Width="344" Height="111"/>
         <Button x:Name="btnQ" Content="Q" HorizontalAlignment="Left" Height="37" Margin="87,202,0,0" VerticalAlignment="Top" Width="41" Click="btnQ_Click"/>
         <Button x:Name="btnP" Content="P" HorizontalAlignment="Left" Height="37" Margin="532,202,0,0" VerticalAlignment="Top" Width="41" Click="btnP_Click"/>

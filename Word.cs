@@ -1,6 +1,6 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
-namespace Idiom_Translator
+namespace Rudimentary_Chinese_English
 {
     internal class Word
     {

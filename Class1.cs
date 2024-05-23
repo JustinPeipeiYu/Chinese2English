@@ -10,12 +10,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Idiom_Translator
+namespace Rudimentary_Chinese_English
+
 {
     internal class Methods
     {
         /*
-         * convert a search string to list of Words
+         * run a search query on the record of all Words
          */
         public static List<Word> stringToList(string searchWord,List<Word> wordRecords)
         {
@@ -31,8 +32,23 @@ namespace Idiom_Translator
 
             return e;
         }
+
+        /*
+         * update a source phrase with a new unicode character
+         */
+        public static string updateSourcePhrase(string src, string uni)
+        {
+            src += uni;
+            return src;
+        }
+
         /* 
-         * Return an ordered dictionary and the list of Words under the pageCounter key
+         * run a search query 
+         * get a list of results 
+         * convert to dictionary 
+         * reorder the dictionary 
+         * return the dictionary
+         * return dictionary value under a specified key
          */
         public static Tuple<Dictionary<int, List<Word>>,List<Word>> searchWord(string pinyin, int pageCounter, List<Word> wordRecords)
         {
@@ -65,6 +81,7 @@ namespace Idiom_Translator
             searchWord += letter;
             return searchWord;
         }
+
         /*
          * replace the last vowel in search string with a toned vowel
          */
@@ -97,7 +114,62 @@ namespace Idiom_Translator
             return searchWord.Substring(0, searchWord.Length - 1);
         }
 
-        /*sort a list of Words by increasing frequency
+        /*
+         * add a new line character to source phrase
+         */
+        public static string addNewLine(string src)
+        {
+            src += "\n";
+            return src;
+        }
+
+        /*
+         * add a comma character to source phrase
+         */
+        public static string addComma(string src)
+        {
+            src += ", ";
+            return src;
+        }
+
+        /*
+         * add a period character to source phrase
+         */
+        public static string addPeriod(string src)
+        {
+            src += "。";
+            return src;
+        }
+
+        /*
+         * add a exclamation character to source phrase
+         */
+        public static string addExclamationMark(string src)
+        {
+            src += "! ";
+            return src;
+        }
+
+        /*
+         * add a question character to source phrase
+         */
+        public static string addQuestionMark(string src)
+        {
+            src += "? ";
+            return src;
+        }
+
+        /*
+         * add a space character to source phrase
+         */
+        public static string addSpace(string src)
+        {
+            src += " ";
+            return src;
+        }
+
+        /*
+         * reorder a list of Words by increasing frequency
          */
         public static List<Word> sortList(List<Word> listSearchWord)
         {
@@ -169,14 +241,14 @@ namespace Idiom_Translator
                 dictionarySearchWord.Add(2, listSearchWord.GetRange(5, 5));
                 dictionarySearchWord.Add(3, listSearchWord.GetRange(10, 5));
                 dictionarySearchWord.Add(4, listSearchWord.GetRange(15, 5));
-                dictionarySearchWord.Add(4, listSearchWord.GetRange(20, listSearchWord.Count - 20));
+                dictionarySearchWord.Add(5, listSearchWord.GetRange(20, listSearchWord.Count - 20));
             }
 
             return dictionarySearchWord;
         }
 
         /*
-         return the list of Words under key index
+         return the value under key index of dictionary
          */
         public static List<Word> keyList(Dictionary<int, List<Word>> dictionarySearchWord, int index)
         {
@@ -202,7 +274,7 @@ namespace Idiom_Translator
         }
 
         /*
-         read 6 rows in csv and store in 6 Vowels
+         * read 6 rows in csv into 6 Vowels
          */
         public static List<Vowels> readVowelCSV()
         {
