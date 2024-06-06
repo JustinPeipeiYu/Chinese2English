@@ -9,8 +9,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Net;
+using System.Windows.Documents;
 
-namespace Rudimentary_Chinese_English
+namespace Chinese2English
 
 {
     internal class Methods
@@ -290,5 +292,26 @@ namespace Rudimentary_Chinese_English
             }
         }
 
-    }
+        /*
+         * translate string to any language using Google API
+         */
+        /*
+        public static string Translate(string text)
+        {
+            string translated = null;
+            text=Regex.Unescape(text);
+            HttpWebRequest hwr = (HttpWebRequest)HttpWebRequest.Create
+                ("https://translate.google.ca/?sl=auto&tl=en&text="+text+"&op=translate");
+            HttpWebResponse res = (HttpWebResponse)hwr.GetResponse();
+            StreamReader sr = new StreamReader(res.GetResponseStream());
+            string html = sr.ReadToEnd();
+            int rawlength1 = html.IndexOf("<lang=\"en-US\">");
+            string rawStr1 = html.Substring(rawlength1);
+            int rawlength2 = rawStr1.IndexOf("<\\span>");
+            string rawstr2 = rawStr1.Substring(0, rawlength2);
+            translated = rawstr2.Replace("data-text=", "");
+            return translated;
+        }*/
+
+    }//end class
 }

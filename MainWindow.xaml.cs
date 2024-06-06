@@ -19,7 +19,7 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Security.Policy;
 
-namespace Rudimentary_Chinese_English
+namespace Chinese2English
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -55,6 +55,9 @@ namespace Rudimentary_Chinese_English
 
         //source phrase
         string sourcePhrase = string.Empty;
+
+        //target phrase
+        string targetPhrase = string.Empty;
 
 
         public MainWindow()
@@ -650,7 +653,8 @@ namespace Rudimentary_Chinese_English
 
         private void BtnConvert_Click(object sender, RoutedEventArgs e)
         {
-            
+            //targetPhrase = Methods.Translate(sourcePhrase);
+            txtTarget.Text = targetPhrase;
         }
 
         private void btnNextSuggest_Click(object sender, RoutedEventArgs e)

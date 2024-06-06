@@ -1,6 +1,6 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
-namespace Rudimentary_Chinese_English
+namespace Chinese2English
 {
     internal class Vowels
     {

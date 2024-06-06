@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rudimentary_Chinese_English.Properties
+namespace Chinese2English.Properties
 {
 
 

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Rudimentary_Chinese_English
+namespace Chinese2English
 {
     /// <summary>
     /// Interaction logic for App.xaml
