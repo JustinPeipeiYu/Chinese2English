@@ -1,6 +1,6 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
-namespace Chinese2English
+namespace PiaoTranslator
 {
     internal class Vowels
     {

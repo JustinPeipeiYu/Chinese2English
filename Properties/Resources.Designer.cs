@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chinese2English.Properties
+namespace PiaoTranslator.Properties
 {
 
 

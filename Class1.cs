@@ -12,7 +12,7 @@ using System.Windows;
 using System.Net;
 using System.Windows.Documents;
 
-namespace Chinese2English
+namespace PiaoTranslator
 
 {
     internal class Methods

@@ -1,21 +1,13 @@
-﻿<Window x:Class="Chinese2English.MainWindow"
+﻿<Window x:Class="PiaoTranslator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Chinese2English"
+        xmlns:local="clr-namespace:PiaoTranslator"
         mc:Ignorable="d"
-        Title="Chinese2English" ResizeMode="NoResize" Height="460" Width="800" Background="CornflowerBlue">
+        Title="PiaoTranslator" ResizeMode="NoResize" Height="460" Width="800" Background="CornflowerBlue">
     <Grid Margin="0,10,0,0">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <Button x:Name="btnSpace" Content="" HorizontalAlignment="Left" Margin="222,361,0,0" VerticalAlignment="Top" Width="228" Height="37" Click="btnSpace_Click"/>
-        <TextBlock x:Name="txtSource" HorizontalAlignment="Left" Margin="22,-5,0,0" TextWrapping="Wrap" FontSize="25" VerticalAlignment="Top" Width="342" Height="111" Background="white"/>
-        <TextBlock x:Name="txtTarget" HorizontalAlignment="Left" Margin="424,-5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="white" Width="344" Height="111"/>
         <Button x:Name="btnQ" Content="Q" HorizontalAlignment="Left" Height="37" Margin="87,202,0,0" VerticalAlignment="Top" Width="41" Click="btnQ_Click"/>
         <Button x:Name="btnP" Content="P" HorizontalAlignment="Left" Height="37" Margin="532,202,0,0" VerticalAlignment="Top" Width="41" Click="btnP_Click"/>
         <Button x:Name="btnI" Content="I" HorizontalAlignment="Left" Height="37" Margin="434,202,0,0" VerticalAlignment="Top" Width="41" Click="btnI_Click"/>
@@ -54,14 +46,18 @@
         <Button x:Name="btnEnter" Content="↵ " FontSize="25" Background="white" HorizontalAlignment="Left" Margin="557,252,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnEnter_Click"/>
         <Button x:Name="btnRefresh" Content="⟳" FontSize="22" Background="white" HorizontalAlignment="Left" Margin="537,308,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnRefresh_Click"/>
         <Button x:Name="btnBackspace" Content="←" FontSize="23" Background="white" HorizontalAlignment="Left" Margin="578,202,0,0" VerticalAlignment="Top" Height="37" Width="42" Click="btnBackspace_Click"/>
-        <Label x:Name="lblPinyin" Content="" FontSize="19" Background="Cornsilk" HorizontalAlignment="Left" Height="37" Margin="95,146,0,0" VerticalAlignment="Top" Width="170"/>
+        <!--Permanant section of form-->
         <Button x:Name="btnSuggest1" Background="AliceBlue" HorizontalAlignment="Left" Margin="329,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest1_Click"/>
         <Button x:Name="btnSuggest2" Background="AliceBlue" HorizontalAlignment="Left" Margin="379,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest2_Click"/>
         <Button x:Name="btnSuggest3" Background="AliceBlue" HorizontalAlignment="Left" Margin="429,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest3_Click"/>
         <Button x:Name="btnSuggest4" Background="AliceBlue" HorizontalAlignment="Left" Margin="479,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest4_Click"/>
         <Button x:Name="btnSuggest5" Background="AliceBlue" HorizontalAlignment="Left" Margin="529,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnSuggest5_Click"/>
-        <Button x:Name="BtnConvert" Background="PaleGoldenrod" Content="⟹" FontSize="20" HorizontalAlignment="Left" Margin="369,34,0,0" VerticalAlignment="Top" Height="38" Width="50" Click="BtnConvert_Click"/>
         <Button x:Name="btnNextSuggest" Content="→" FontSize="23" Background="AliceBlue" HorizontalAlignment="Left" Margin="577,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnNextSuggest_Click"/>
         <Button x:Name="btnBackSuggest" Content="←" FontSize="23" Background="AliceBlue" HorizontalAlignment="Left" Margin="276,146,0,0" VerticalAlignment="Top" Height="37" Width="38" Click="btnBackSuggest_Click"/>
+        <Label Content="lblSource" x:Name="lblSource" FontSize="25" HorizontalAlignment="Left" Height="51" Margin="23,48,0,0" VerticalAlignment="Top" Width="218"/>
+        <Label Content="lblSource2" x:Name="lblSource2" FontSize="25" HorizontalAlignment="Left" Margin="22,0,0,0" VerticalAlignment="Top"/>
+        <Label Content="lblTarget" x:Name="lblTarget" FontSize="25" HorizontalAlignment="Left" Margin="22,99,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblPinyin" Content="" FontSize="19" Background="Cornsilk" HorizontalAlignment="Left" Height="37" Margin="95,146,0,0" VerticalAlignment="Top" Width="170"/>
+        <Button Content="pinyin" x:Name="btnToggle" HorizontalAlignment="Left" Margin="662,146,0,0" VerticalAlignment="Top" Height="37" RenderTransformOrigin="0.172,0.542" Width="40" Click="btnToggle_Click"/>
     </Grid>
 </Window>

@@ -1,7 +1,7 @@
-﻿<Application x:Class="Chinese2English.App"
+﻿<Application x:Class="PiaoTranslator.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Chinese2English"
+             xmlns:local="clr-namespace:PiaoTranslator"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

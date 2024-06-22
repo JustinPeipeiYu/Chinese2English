@@ -19,7 +19,7 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using System.Security.Policy;
 
-namespace Chinese2English
+namespace PiaoTranslator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -56,8 +56,11 @@ namespace Chinese2English
         //source phrase
         string sourcePhrase = string.Empty;
 
+        //source phrase 2
+        string sourcePhrase2 = string.Empty;
+
         //target phrase
-        string targetPhrase = string.Empty;
+        //string targetPhrase = string.Empty;
 
 
         public MainWindow()
@@ -186,31 +189,41 @@ namespace Chinese2English
         private void btnSuggest1_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[0].Unicode);
-            txtSource.Text = Regex.Unescape(sourcePhrase); 
+            lblSource.Content = Regex.Unescape(sourcePhrase);
+            sourcePhrase2 = Methods.updateSourcePhrase(sourcePhrase2, shortWordList[0].Pinyin);
+            lblSource2.Content = sourcePhrase2;
         }
 
         private void btnSuggest5_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[4].Unicode);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
+            sourcePhrase2 = Methods.updateSourcePhrase(sourcePhrase2, shortWordList[4].Pinyin);
+            lblSource2.Content = sourcePhrase2;
         }
 
         private void btnSuggest4_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[3].Unicode);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
+            sourcePhrase2 = Methods.updateSourcePhrase(sourcePhrase2, shortWordList[3].Pinyin);
+            lblSource2.Content = sourcePhrase2;
         }
 
         private void btnSuggest3_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[2].Unicode);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
+            sourcePhrase2 = Methods.updateSourcePhrase(sourcePhrase2, shortWordList[2].Pinyin);
+            lblSource2.Content = sourcePhrase2;
         }
 
         private void btnSuggest2_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.updateSourcePhrase(sourcePhrase, shortWordList[1].Unicode);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
+            sourcePhrase2 = Methods.updateSourcePhrase(sourcePhrase2, shortWordList[1].Pinyin);
+            lblSource2.Content = sourcePhrase2;
         }
 
         private void btnQ_Click(object sender, RoutedEventArgs e)
@@ -548,31 +561,31 @@ namespace Chinese2English
         private void btnExclamation_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.addExclamationMark(sourcePhrase);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
         }
 
         private void btnSpace_Click(object sender, RoutedEventArgs e)
         {
-            sourcePhrase = Methods.addSpace(sourcePhrase);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            sourcePhrase2 = Methods.addSpace(sourcePhrase2);
+            lblSource2.Content = sourcePhrase2;
         }
 
         private void btnComma_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.addComma(sourcePhrase);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
         }
 
         private void btnPeriod_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.addPeriod(sourcePhrase);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
         }
 
         private void btnQuestion_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.addQuestionMark(sourcePhrase);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
         }
 
         private void btnTone1_Click(object sender, RoutedEventArgs e)
@@ -642,20 +655,15 @@ namespace Chinese2English
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = Methods.addNewLine(sourcePhrase);
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             sourcePhrase = string.Empty;
-            txtSource.Text = Regex.Unescape(sourcePhrase);
+            lblSource.Content = Regex.Unescape(sourcePhrase);
         }
 
-        private void BtnConvert_Click(object sender, RoutedEventArgs e)
-        {
-            //targetPhrase = Methods.Translate(sourcePhrase);
-            txtTarget.Text = targetPhrase;
-        }
 
         private void btnNextSuggest_Click(object sender, RoutedEventArgs e)
         {
@@ -677,6 +685,17 @@ namespace Chinese2English
             shortWordList = Methods.keyList(wordDict, pageCounter);
             displayButtons(pageCounter, wordDict.Count, shortWordList.Count, pinyin);
             showButtonValue(shortWordList, pinyin);
+        }
+
+        private void btnToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnToggle.Content.Equals("pinyin"))
+            {
+                btnToggle.Content = "hanzi";
+            } else
+            {
+                btnToggle.Content = "pinyin";
+            }
         }
     }
 }
